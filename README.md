@@ -39,11 +39,13 @@ g++ -o calificaciones calificaciones.cpp
 ## Capturas de pantalla
 
 ### Entrada de datos
-<img width="1092" height="567" alt="image" src="https://github.com/user-attachments/assets/adc5598b-a835-450d-9600-aa341b6ef999" />
+
+<img width="1107" height="623" alt="image" src="https://github.com/user-attachments/assets/5b66c76d-633b-475b-93d9-628546ac60a2" />
 
 
 ### Resultados (tabla, promedio, máximo, mínimo, aprobados/reprobados)
-<img width="1083" height="625" alt="image" src="https://github.com/user-attachments/assets/7df9f86a-7744-4f5c-ae2b-4e08b2395da2" />
+<img width="1108" height="620" alt="image" src="https://github.com/user-attachments/assets/50311181-49bc-43f2-9bd1-bf2fbb8d0f80" />
+
 
 
 ## Explicación de los arreglos utilizados
