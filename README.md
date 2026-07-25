@@ -39,10 +39,12 @@ g++ -o calificaciones calificaciones.cpp
 ## Capturas de pantalla
 
 ### Entrada de datos
-[Insertar aquí captura mostrando el programa pidiendo nombre y calificación]
+<img width="1092" height="567" alt="image" src="https://github.com/user-attachments/assets/adc5598b-a835-450d-9600-aa341b6ef999" />
+
 
 ### Resultados (tabla, promedio, máximo, mínimo, aprobados/reprobados)
-[Insertar aquí captura mostrando los resultados finales del programa]
+<img width="1083" height="625" alt="image" src="https://github.com/user-attachments/assets/7df9f86a-7744-4f5c-ae2b-4e08b2395da2" />
+
 
 ## Explicación de los arreglos utilizados
 
