@@ -1,0 +1,145 @@
+
+
+#include <iostream>
+#include <iomanip>   
+#include <string>
+
+using namespace std;
+
+const int MAX_ESTUDIANTES = 10;
+const float NOTA_MINIMA_APROBACION = 70.0;
+
+void llenarDatos(string nombres[], float notas[], int n) {
+    for (int i = 0; i < n; i++) {
+        cout << "\n--- Estudiante " << (i + 1) << " ---" << endl;
+
+        cout << "Nombre: ";
+        cin.ignore();
+        getline(cin, nombres[i]);
+
+        float nota;
+        bool notaValida = false;
+
+        
+        while (!notaValida) {
+            cout << "Calificacion (0-100): ";
+            cin >> nota;
+
+            if (nota < 0 || nota > 100) {
+                cout << "Error: la nota debe estar entre 0 y 100. Intente de nuevo." << endl;
+            }
+            else {
+                notaValida = true;
+            }
+        }
+
+        notas[i] = nota;
+    }
+}
+
+
+void mostrarDatos(string nombres[], float notas[], int n) {
+    cout << "\n===================================" << endl;
+    cout << "     LISTADO DE CALIFICACIONES" << endl;
+    cout << "===================================" << endl;
+    cout << left << setw(20) << "Nombre" << setw(10) << "Nota" << endl;
+    cout << "-----------------------------------" << endl;
+
+    for (int i = 0; i < n; i++) {
+        cout << left << setw(20) << nombres[i] << setw(10) << notas[i] << endl;
+    }
+}
+
+
+float calcularPromedio(float notas[], int n) {
+    float suma = 0;
+    for (int i = 0; i < n; i++) {
+        suma += notas[i];
+    }
+    return suma / n;
+}
+
+
+int buscarMaximo(float notas[], int n) {
+    int indiceMax = 0; 
+
+    for (int i = 1; i < n; i++) {
+        if (notas[i] > notas[indiceMax]) {
+            indiceMax = i;
+        }
+    }
+    return indiceMax;
+}
+
+
+int buscarMinimo(float notas[], int n) {
+    int indiceMin = 0; 
+
+    for (int i = 1; i < n; i++) {
+        if (notas[i] < notas[indiceMin]) {
+            indiceMin = i;
+        }
+    }
+    return indiceMin;
+}
+
+
+void contarAprobadosReprobados(float notas[], int n, int& aprobados, int& reprobados) {
+    aprobados = 0;
+    reprobados = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (notas[i] >= NOTA_MINIMA_APROBACION) {
+            aprobados++;
+        }
+        else {
+            reprobados++;
+        }
+    }
+}
+
+int main() {
+    string nombres[MAX_ESTUDIANTES];
+    float notas[MAX_ESTUDIANTES];
+    int cantidadEstudiantes;
+
+    cout << "=== REGISTRO DE CALIFICACIONES ===" << endl;
+    cout << "Ingrese la cantidad de estudiantes (maximo " << MAX_ESTUDIANTES << "): ";
+    cin >> cantidadEstudiantes;
+
+    
+    while (cantidadEstudiantes <= 0 || cantidadEstudiantes > MAX_ESTUDIANTES) {
+        cout << "Cantidad invalida. Ingrese un numero entre 1 y " << MAX_ESTUDIANTES << ": ";
+        cin >> cantidadEstudiantes;
+    }
+
+    
+    llenarDatos(nombres, notas, cantidadEstudiantes);
+
+    
+    mostrarDatos(nombres, notas, cantidadEstudiantes);
+
+   
+    float promedio = calcularPromedio(notas, cantidadEstudiantes);
+    cout << "\nPromedio general del grupo: " << fixed << setprecision(2) << promedio << endl;
+
+   
+    int idxMax = buscarMaximo(notas, cantidadEstudiantes);
+    cout << "Nota mas alta: " << nombres[idxMax] << " con " << notas[idxMax] << endl;
+
+    
+    int idxMin = buscarMinimo(notas, cantidadEstudiantes);
+    cout << "Nota mas baja: " << nombres[idxMin] << " con " << notas[idxMin] << endl;
+
+    
+    int aprobados, reprobados;
+    contarAprobadosReprobados(notas, cantidadEstudiantes, aprobados, reprobados);
+    cout << "\nEstudiantes aprobados (>= " << NOTA_MINIMA_APROBACION << "): " << aprobados << endl;
+    cout << "Estudiantes reprobados: " << reprobados << endl;
+
+    cin.ignore();
+    cin.get(); 
+    return 0;
+}
+
+
