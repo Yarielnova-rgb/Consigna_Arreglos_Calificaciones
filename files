@@ -1,14 +1,17 @@
-
-
 #include <iostream>
-#include <iomanip>   
+#include <iomanip>
 #include <string>
-
 using namespace std;
 
-const int MAX_ESTUDIANTES = 10;
-const float NOTA_MINIMA_APROBACION = 70.0;
+const int TAM_MAX = 50; // tamaño máximo permitido para los arreglos
+const float NOTA_MINIMA_APROBAR = 70.0; // umbral de aprobación
 
+/*
+ * Llena los arreglos paralelos "nombres" y "notas" pidiendo los datos
+ * por teclado. Usa la MISMA posición de índice para relacionar el
+ * nombre de un estudiante con su calificación (arreglos paralelos).
+ * Valida que la nota esté en el rango 0-100.
+ */
 void llenarDatos(string nombres[], float notas[], int n) {
     for (int i = 0; i < n; i++) {
         cout << "\n--- Estudiante " << (i + 1) << " ---" << endl;
@@ -18,10 +21,10 @@ void llenarDatos(string nombres[], float notas[], int n) {
         getline(cin, nombres[i]);
 
         float nota;
-        bool notaValida = false;
+        bool valida = false;
 
-        
-        while (!notaValida) {
+        // Ciclo de validacion: repite hasta que la nota este en rango 0-100
+        while (!valida) {
             cout << "Calificacion (0-100): ";
             cin >> nota;
 
@@ -29,7 +32,7 @@ void llenarDatos(string nombres[], float notas[], int n) {
                 cout << "Error: la nota debe estar entre 0 y 100. Intente de nuevo." << endl;
             }
             else {
-                notaValida = true;
+                valida = true;
             }
         }
 
@@ -37,20 +40,26 @@ void llenarDatos(string nombres[], float notas[], int n) {
     }
 }
 
-
+/*
+ * Recorre ambos arreglos e imprime una tabla ordenada con
+ * el nombre y la calificacion de cada estudiante.
+ */
 void mostrarDatos(string nombres[], float notas[], int n) {
     cout << "\n===================================" << endl;
-    cout << "     LISTADO DE CALIFICACIONES" << endl;
+    cout << "      LISTADO DE CALIFICACIONES" << endl;
     cout << "===================================" << endl;
-    cout << left << setw(20) << "Nombre" << setw(10) << "Nota" << endl;
+    cout << left << setw(20) << "Nombre" << "Calificacion" << endl;
     cout << "-----------------------------------" << endl;
 
     for (int i = 0; i < n; i++) {
-        cout << left << setw(20) << nombres[i] << setw(10) << notas[i] << endl;
+        cout << left << setw(20) << nombres[i] << fixed << setprecision(2) << notas[i] << endl;
     }
 }
 
-
+/*
+ * Calcula el promedio general sumando todas las notas
+ * y dividiendo entre la cantidad de estudiantes.
+ */
 float calcularPromedio(float notas[], int n) {
     float suma = 0;
     for (int i = 0; i < n; i++) {
@@ -59,10 +68,14 @@ float calcularPromedio(float notas[], int n) {
     return suma / n;
 }
 
-
+/*
+ * Recorre el arreglo de notas comparando con if/else para
+ * encontrar la calificacion mas alta y el indice donde ocurre.
+ * Se asume que el primer estudiante tiene la nota maxima y se
+ * va comparando contra el resto.
+ */
 int buscarMaximo(float notas[], int n) {
-    int indiceMax = 0; 
-
+    int indiceMax = 0;
     for (int i = 1; i < n; i++) {
         if (notas[i] > notas[indiceMax]) {
             indiceMax = i;
@@ -71,10 +84,12 @@ int buscarMaximo(float notas[], int n) {
     return indiceMax;
 }
 
-
+/*
+ * Misma logica que buscarMaximo, pero para encontrar
+ * la calificacion mas baja.
+ */
 int buscarMinimo(float notas[], int n) {
-    int indiceMin = 0; 
-
+    int indiceMin = 0;
     for (int i = 1; i < n; i++) {
         if (notas[i] < notas[indiceMin]) {
             indiceMin = i;
@@ -83,13 +98,17 @@ int buscarMinimo(float notas[], int n) {
     return indiceMin;
 }
 
-
+/*
+ * Recorre el arreglo de notas y cuenta cuantos estudiantes
+ * aprobaron (nota >= NOTA_MINIMA_APROBAR) y cuantos reprobaron.
+ * Los resultados se devuelven mediante parametros por referencia.
+ */
 void contarAprobadosReprobados(float notas[], int n, int& aprobados, int& reprobados) {
     aprobados = 0;
     reprobados = 0;
 
     for (int i = 0; i < n; i++) {
-        if (notas[i] >= NOTA_MINIMA_APROBACION) {
+        if (notas[i] >= NOTA_MINIMA_APROBAR) {
             aprobados++;
         }
         else {
@@ -99,47 +118,41 @@ void contarAprobadosReprobados(float notas[], int n, int& aprobados, int& reprob
 }
 
 int main() {
-    string nombres[MAX_ESTUDIANTES];
-    float notas[MAX_ESTUDIANTES];
-    int cantidadEstudiantes;
+    string nombres[TAM_MAX];
+    float notas[TAM_MAX];
+    int n;
 
     cout << "=== REGISTRO DE CALIFICACIONES ===" << endl;
-    cout << "Ingrese la cantidad de estudiantes (maximo " << MAX_ESTUDIANTES << "): ";
-    cin >> cantidadEstudiantes;
+    cout << "Cuantos estudiantes desea registrar? ";
+    cin >> n;
 
-    
-    while (cantidadEstudiantes <= 0 || cantidadEstudiantes > MAX_ESTUDIANTES) {
-        cout << "Cantidad invalida. Ingrese un numero entre 1 y " << MAX_ESTUDIANTES << ": ";
-        cin >> cantidadEstudiantes;
+    // Validacion simple del tamano ingresado
+    while (n <= 0 || n > TAM_MAX) {
+        cout << "Ingrese un numero valido (1-" << TAM_MAX << "): ";
+        cin >> n;
     }
 
-    
-    llenarDatos(nombres, notas, cantidadEstudiantes);
+    llenarDatos(nombres, notas, n);
+    mostrarDatos(nombres, notas, n);
 
-    
-    mostrarDatos(nombres, notas, cantidadEstudiantes);
+    float promedio = calcularPromedio(notas, n);
+    int indiceMax = buscarMaximo(notas, n);
+    int indiceMin = buscarMinimo(notas, n);
 
-   
-    float promedio = calcularPromedio(notas, cantidadEstudiantes);
-    cout << "\nPromedio general del grupo: " << fixed << setprecision(2) << promedio << endl;
-
-   
-    int idxMax = buscarMaximo(notas, cantidadEstudiantes);
-    cout << "Nota mas alta: " << nombres[idxMax] << " con " << notas[idxMax] << endl;
-
-    
-    int idxMin = buscarMinimo(notas, cantidadEstudiantes);
-    cout << "Nota mas baja: " << nombres[idxMin] << " con " << notas[idxMin] << endl;
-
-    
     int aprobados, reprobados;
-    contarAprobadosReprobados(notas, cantidadEstudiantes, aprobados, reprobados);
-    cout << "\nEstudiantes aprobados (>= " << NOTA_MINIMA_APROBACION << "): " << aprobados << endl;
+    contarAprobadosReprobados(notas, n, aprobados, reprobados);
+
+    cout << "\n===================================" << endl;
+    cout << "           ESTADISTICAS" << endl;
+    cout << "===================================" << endl;
+    cout << fixed << setprecision(2);
+    cout << "Promedio general: " << promedio << endl;
+    cout << "Nota mas alta: " << nombres[indiceMax] << " con " << notas[indiceMax] << endl;
+    cout << "Nota mas baja: " << nombres[indiceMin] << " con " << notas[indiceMin] << endl;
+    cout << "Estudiantes aprobados: " << aprobados << endl;
     cout << "Estudiantes reprobados: " << reprobados << endl;
 
     cin.ignore();
-    cin.get(); 
+    cin.get(); // evita que la consola se cierre en Visual Studio
     return 0;
 }
-
-
